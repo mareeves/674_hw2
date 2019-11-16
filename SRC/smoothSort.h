@@ -40,9 +40,14 @@ class smoothSort : public ISort{
 	int distance(int first, int second, vector<int> &vector){
 		for(int i = first; i<vector.size(); i++){
 			if(vector[i]==vector[second]){
+				//cout << "first___" << vector[first] << endl;
+				//cout << "second___" << vector[second]<< endl;
+				//cout << "helloworld" << endl;
 				return i-first;
 			}
 		}
+		//cout << "first" << vector[first] << endl;
+		//cout << "second" << vector[second]<< endl;
 		
 		return -1;
 	}
@@ -62,7 +67,9 @@ class smoothSort : public ISort{
 	}
 	
 	void rebalanceSingleHeap(int root, int size, vector<int> &vector){
+		cout << "size: " << size << endl;
 		while(size>1){
+			cout << "hello" << endl;
 			int first = firstChild(root, size);
 			int second = secondChild(root);
 			int largerChild;
@@ -77,10 +84,13 @@ class smoothSort : public ISort{
 				childSize = size - 1;
 			}
 			
-			if(compare(root, largerChild, vector) == root)
+			if(compare(root, largerChild, vector) == root){
+			cout << "root: " << vector[root] << endl;
+			cout << "largerChild: " << vector[largerChild] << endl;
 			return;
+			}
 			
-			
+			cout << "Swapldlsf;lk: " << vector[root] << " with " << vector[largerChild] << endl;
 			swap(vector[root], vector[largerChild]);
 			root = largerChild;
 			size = childSize;
@@ -95,9 +105,11 @@ class smoothSort : public ISort{
 		
 		while(true){
 			lastHeapSize = hs.smallestTreeSize;
-			if(distance(begin,itr,vector) == leo[lastHeapSize] -1)
-			break;
-			
+			cout << "tree size: " << hs.smallestTreeSize << endl;
+			if(distance(begin,itr,vector) == leo[lastHeapSize] -1){
+				cout << "broke" << endl;			
+				break;
+			}
 			int toCompare = itr;
 			
 			if(hs.smallestTreeSize > 1){
@@ -113,6 +125,8 @@ class smoothSort : public ISort{
 			if(compare(toCompare, priorHeap, vector) == toCompare)
 			break;
 			
+			cout << "Swap: " << vector[itr] << " with " << vector[priorHeap] << endl;
+
 			swap(vector[itr], vector[priorHeap]);
 			itr = priorHeap;
 			
@@ -125,23 +139,27 @@ class smoothSort : public ISort{
 		
 	}
 	
-	void leonardoHeapAdd(int begin, int end, int heapEnd, heapShape hs, vector<int> &vector){
+	void leonardoHeapAdd(int begin, int end, int heapEnd, heapShape &hs, vector<int> &vector){
 		if (!hs.trees[0]) {
+			cout << "!hs.trees[0]" << endl;
       		hs.trees[0] = true;
       		hs.smallestTreeSize = 1;
     	}    	
     	else if (hs.trees[1] && hs.trees[0]) {
-		  hs.trees >>= 2;
-		  hs.trees[0] = true;
-		  hs.smallestTreeSize += 2;
+			cout << "hs.trees[1] && hs.trees[0]" << endl;    	
+		  	hs.trees >>= 2;
+		  	hs.trees[0] = true;
+		  	hs.smallestTreeSize += 2;
     	}     	
 		else if (hs.smallestTreeSize == 1) {
-		  hs.trees <<= 1;
-		  hs.smallestTreeSize = 0;
+			cout << "hs.smallestTreeSize == 1" << endl;
+		  	hs.trees <<= 1;
+		  	hs.smallestTreeSize = 0;
 	
-		  hs.trees[0] = true;
+		  	hs.trees[0] = true;
 		} 
 		else {
+			cout << "else" << endl;
 
 		  hs.trees <<= hs.smallestTreeSize - 1;
 		  hs.trees[0] = true;
@@ -166,15 +184,20 @@ class smoothSort : public ISort{
 			isLast = true;
 		  break;
 		}	
-		if (!isLast)
+		if (!isLast){
+			cout << "rebalance single heap" << endl;
 		  rebalanceSingleHeap(end, hs.smallestTreeSize, vector);
-		else
+		  }
+		else{
+		 cout << "heap rectify" << endl;
+
 		  leonardoHeapRectify(begin, end + 1, hs, vector);
+		  }
 	}
 	
 	
 	void leonardoHeapRemove(int begin, int end,
-                          heapShape hs, vector<int> & vector) {
+                          heapShape &hs, vector<int> & vector) {
 	
 
 		if (hs.smallestTreeSize <= 1) {
@@ -246,5 +269,5 @@ void smoothSort::sort(vector<int> & vector){
 	for (int itr = end; itr != begin; --itr)
 	leonardoHeapRemove(begin, itr, hs, vector);
 	
-	//printAll(vector);
+	printAll(vector);
 }
