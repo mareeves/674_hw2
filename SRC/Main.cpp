@@ -4,28 +4,40 @@
 #include "insertionSort.h"
 #include "selectionSort.h"
 #include "smoothSort.h"
+#include "countingSort.h"
+#include "radixSort.h"
+#include "quickSort.h"
+#include "mergeSort.h"
+#include "heapSort.h"
+#include "bubbleSort.h"
+#include "bubbleSortwFlag.h"
+
 using namespace std; 
 
 int main(){
 	vector<int> *vec = new vector<int>(); 
 
-	vec->push_back(9);
-	vec->push_back(8);
-	vec->push_back(7);
-	vec->push_back(6);
-	vec->push_back(5);
-	vec->push_back(4);
-	vec->push_back(3);
+	vec->push_back(90);
+	vec->push_back(90);
+	vec->push_back(90);
+	vec->push_back(170);
+	vec->push_back(45);
+	vec->push_back(75);
+	vec->push_back(90);
+	vec->push_back(802);
+	vec->push_back(24);
 	vec->push_back(2);
-	vec->push_back(1);
+	vec->push_back(66);
+	
+
 
 		
 	
 	
-	smoothSort *ss = new smoothSort();
+	mergeSort *ss = new mergeSort();
 	ss->sort(*vec);
 	
-	free(vec);
-	free(ss);
+	delete(vec);
+	delete(ss);
 	return 0;
 }
