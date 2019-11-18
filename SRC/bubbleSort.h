@@ -19,9 +19,9 @@ class bubbleSort : public ISort{
 		// Last i elements are already in place  
 			for (j = 0; j < n-i-1; j++){  
 				if (vector[j] > vector[j+1]){ 
-					cout << "swapping " << vector[j] << " with " << vector[j+1] << endl;  
+					//cout << "swapping " << vector[j] << " with " << vector[j+1] << endl;  
 					swap(vector[j], vector[j+1]);
-					cout << "swapped " << vector[j] << " with " << vector[j+1] << endl; 
+					//cout << "swapped " << vector[j] << " with " << vector[j+1] << endl; 
 				}
 					
 			}
