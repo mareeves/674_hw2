@@ -5,13 +5,6 @@ class selectionSort : public ISort{
 	selectionSort(){}
 	~selectionSort(){}
 	void sort(vector<int> & vector);
-	
-	void printAll(vector<int> &vec){
-		for(int i=0; i< vec.size(); i++){
-			cout << vec[i] << endl;
-		};
-		cout << endl << endl << endl;
-	}
 
 };
 
@@ -36,6 +29,4 @@ void selectionSort::sort(vector<int> & vector){
 			break;
 		}
 	}
-	
-	printAll(vector);
 }

@@ -27,7 +27,7 @@ class bubbleSortwFlag : public ISort{
 			} 
 		 } 
 	  
-		 // IF no two elements were swapped by inner loop, then break 
+		 // Break the loop if no elements needed to get swapped
 		 if (swapped == false) 
 			break; 
 	   } 
@@ -37,10 +37,7 @@ class bubbleSortwFlag : public ISort{
 
 void bubbleSortwFlag::sort(vector<int> &vector){
 	int n = vector.size();
-	bubbleSortExecution(vector, n);
-	for(int i = 0; i < vector.size(); i++){
-    	cout << vector[i] << endl;
-    } 
+	bubbleSortExecution(vector, n); 
 }
 
 

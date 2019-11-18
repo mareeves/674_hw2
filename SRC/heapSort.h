@@ -13,9 +13,12 @@ class heapSort : public ISort{
 		
 	void heapify(vector<int> &vector, int n, int i) 
 	{ 
-		int largest = i; // Initialize largest as root 
-		int l = 2*i + 1; // left = 2*i + 1 
-		int r = 2*i + 2; // right = 2*i + 2 
+		int largest = i;
+		//left node  
+		int l = 2*i + 1;
+		
+		//right node  
+		int r = 2*i + 2; 
 	  
 		// If left child is larger than root 
 		if (l < n && vector[l] > vector[largest]) 
@@ -36,14 +39,14 @@ class heapSort : public ISort{
 	} 
 	  
 	// main function to do heap sort 
-	void heapSortExecution(vector<int> &vector, int n) 
+	void heapSortExecution(vector<int> &vector, int size) 
 	{ 
-		// Build heap (rearrange array) 
-		for (int i = n / 2 - 1; i >= 0; i--) 
-			heapify(vector, n, i); 
+		// Build heap  
+		for (int i = size / 2 - 1; i >= 0; i--) 
+			heapify(vector, size, i); 
 	  
-		// One by one extract an element from heap 
-		for (int i=n-1; i>=0; i--) 
+		// extract elements from heap
+		for (int i=size-1; i>=0; i--) 
 		{ 
 			// Move current root to end 
 			swap(vector[0], vector[i]); 
@@ -55,13 +58,8 @@ class heapSort : public ISort{
 };
 
 void heapSort::sort(vector<int> &vector){
-    int n = vector.size(); 
-  
-    heapSortExecution(vector, n); 
-  
-    for(int i = 0; i < vector.size(); i++){
-    	cout << vector[i] << endl;
-    }
+  	heapSortExecution(vector, vector.size()); 
+
 }
 
 

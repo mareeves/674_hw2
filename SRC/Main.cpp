@@ -47,7 +47,7 @@ void printAll(vector<int> &vec){
 	cout << endl << endl << endl;
 }
 
-void runTest(ISort *temp, vector<long> &times){
+void runTest(ISort *temp, vector<double> &times){
 	clock_t begin,end;
 	double elapsed_secs;
 	
@@ -70,7 +70,7 @@ void runTest(ISort *temp, vector<long> &times){
     temp->sort(*vec1);
     end = clock();
     elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
-    cout << elapsed_secs << endl;
+    cout << "elapsed seconds: " << elapsed_secs << endl;
 	times.push_back(elapsed_secs);
     //printAll(*vec1);
     delete(vec1);
@@ -94,8 +94,9 @@ void runTest(ISort *temp, vector<long> &times){
     myfile.close();
     begin = clock();
     temp->sort(*vec2);
+    end = clock();
     elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
-    cout << elapsed_secs << endl;
+    cout << "elapsed seconds: " << elapsed_secs << endl;
 	times.push_back(elapsed_secs);
     //printAll(*vec2);
     delete(vec2);
@@ -120,9 +121,10 @@ void runTest(ISort *temp, vector<long> &times){
     myfile.close();
     begin = clock();
     temp->sort(*vec3);
+    end = clock();
     elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
     times.push_back(elapsed_secs);
-    cout << elapsed_secs << endl;
+    cout << "elapsed seconds: " <<  elapsed_secs << endl;
 	//printAll(*vec3);
     delete(vec3);
     myfile.close();
@@ -148,9 +150,10 @@ void runTest(ISort *temp, vector<long> &times){
     myfile.close();
     begin = clock();
     temp->sort(*vec4);
+    end = clock();
     elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
     times.push_back(elapsed_secs);
-    cout << elapsed_secs << endl;
+    cout <<  "elapsed seconds: " << elapsed_secs << endl;
 	//printAll(*vec4);
     delete(vec4);
     myfile.close();
@@ -175,9 +178,10 @@ void runTest(ISort *temp, vector<long> &times){
     myfile.close();
     begin = clock();
     temp->sort(*vec5);
+    end = clock();
     elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
     times.push_back(elapsed_secs);
-    cout << elapsed_secs << endl;
+    cout << "elapsed seconds: " << elapsed_secs << endl;
 	//printAll(*vec5);
     delete(vec5);
     myfile.close();
@@ -199,9 +203,10 @@ void runTest(ISort *temp, vector<long> &times){
     myfile.close();
     begin = clock();
     temp->sort(*vec6);
+    end = clock();
     elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
     times.push_back(elapsed_secs);
-    cout << elapsed_secs << endl;
+    cout << "elapsed seconds: " << elapsed_secs << endl;
 	//printAll(*vec6);
     delete(vec6);
     myfile.close();
@@ -223,11 +228,12 @@ void runTest(ISort *temp, vector<long> &times){
     myfile.close();
     begin = clock();
     temp->sort(*vec7);
-    elapsed_secs = double(end - begin);
+    end = clock();
+    elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
     times.push_back(elapsed_secs);
-    cout << elapsed_secs << endl;
-	printAll(*vec7);
-    //delete(vec7);
+    cout << "elapsed seconds: " << elapsed_secs << endl;
+	//printAll(*vec7);
+    delete(vec7);
     myfile.close();
         
 }
@@ -253,7 +259,7 @@ int main(){
 	ofstream myfile;
 	myfile.open ("times.txt");
 	
-	vector <long> * times = new vector<long>; 
+	vector <double> * times = new vector<double>; 
 	
 	runTest(ss, *times);
 	delete(ss);
@@ -274,6 +280,7 @@ int main(){
 	runTest(hs, *times);
 	delete(hs);
 	
+	cout << "size of times: " <<times->size() << endl;
 	
 	//Selection Sort
 	myfile << "Selection Sort 1000 elements: " << times->at(0) << "\n";
@@ -282,62 +289,84 @@ int main(){
 	myfile << "Selection Sort 8000 elements: " << times->at(3) << "\n";
 	myfile << "Selection Sort 16000 elements: " << times->at(4) << "\n";
 	myfile << "Selection Sort 32000 elements: " << times->at(5) << "\n";
-	
+	myfile << "Selection Sort 64000 elements: " << times->at(6) << "\n";
+	myfile << "\n\n\n\n";
+
 	//Insertion Sort 
-	myfile << "Insertion Sort 1000 elements: " << times->at(6) << "\n";
-	myfile << "Insertion Sort 2000 elements: " << times->at(7) << "\n";
-	myfile << "Insertion Sort 4000 elements: " << times->at(8) << "\n";
-	myfile << "Insertion Sort 8000 elements: " << times->at(9) << "\n";
-	myfile << "Insertion Sort 16000 elements: " << times->at(10) << "\n";
-	myfile << "Insertion Sort 32000 elements: " << times->at(11) << "\n";
+	myfile << "Insertion Sort 1000 elements: " << times->at(7) << "\n";
+	myfile << "Insertion Sort 2000 elements: " << times->at(8) << "\n";
+	myfile << "Insertion Sort 4000 elements: " << times->at(9) << "\n";
+	myfile << "Insertion Sort 8000 elements: " << times->at(10) << "\n";
+	myfile << "Insertion Sort 16000 elements: " << times->at(11) << "\n";
+	myfile << "Insertion Sort 32000 elements: " << times->at(12) << "\n";
+	myfile << "Insertion Sort 64000 elements: " << times->at(13) << "\n";
+	myfile << "\n\n\n\n";
+
 	
 	//Counting Sort
-	myfile << "Counting Sort 1000 elements: " << times->at(12) << "\n";
-	myfile << "Counting Sort 2000 elements: " << times->at(13) << "\n";
-	myfile << "Counting Sort 4000 elements: " << times->at(14) << "\n";
-	myfile << "Counting Sort 8000 elements: " << times->at(15) << "\n";
-	myfile << "Counting Sort 16000 elements: " << times->at(16) << "\n";
-	myfile << "Counting Sort 32000 elements: " << times->at(17) << "\n";
+	myfile << "Counting Sort 1000 elements: " << times->at(14) << "\n";
+	myfile << "Counting Sort 2000 elements: " << times->at(15) << "\n";
+	myfile << "Counting Sort 4000 elements: " << times->at(16) << "\n";
+	myfile << "Counting Sort 8000 elements: " << times->at(17) << "\n";
+	myfile << "Counting Sort 16000 elements: " << times->at(18) << "\n";
+	myfile << "Counting Sort 32000 elements: " << times->at(19) << "\n";
+	myfile << "Counting Sort 64000 elements: " << times->at(20) << "\n";
+	myfile << "\n\n\n\n";
+
 	
 	//Radix Sort
-	myfile << "Radix Sort 1000 elements: " << times->at(18) << "\n";
-	myfile << "Radix Sort 2000 elements: " << times->at(19) << "\n";
-	myfile << "Radix Sort 4000 elements: " << times->at(20) << "\n";
-	myfile << "Radix Sort 8000 elements: " << times->at(21) << "\n";
-	myfile << "Radix Sort 16000 elements: " << times->at(22) << "\n";
-	myfile << "Radix Sort 32000 elements: " << times->at(23) << "\n";
+	myfile << "Radix Sort 1000 elements: " << times->at(21) << "\n";
+	myfile << "Radix Sort 2000 elements: " << times->at(22) << "\n";
+	myfile << "Radix Sort 4000 elements: " << times->at(23) << "\n";
+	myfile << "Radix Sort 8000 elements: " << times->at(24) << "\n";
+	myfile << "Radix Sort 16000 elements: " << times->at(25) << "\n";
+	myfile << "Radix Sort 32000 elements: " << times->at(26) << "\n";
+	myfile << "Radix Sort 64000 elements: " << times->at(27) << "\n";
+	myfile << "\n\n\n\n";
+
 	
 	//Quick Sort
-	myfile << "Quick Sort 1000 elements: " << times->at(24) << "\n";
-	myfile << "Quick Sort 2000 elements: " << times->at(25) << "\n";
-	myfile << "Quick Sort 4000 elements: " << times->at(26) << "\n";
-	myfile << "Quick Sort 8000 elements: " << times->at(27) << "\n";
-	myfile << "Quick Sort 16000 elements: " << times->at(28) << "\n";
-	myfile << "Quick Sort 32000 elements: " << times->at(29) << "\n";
-	
+	myfile << "Quick Sort 1000 elements: " << times->at(28) << "\n";
+	myfile << "Quick Sort 2000 elements: " << times->at(29) << "\n";
+	myfile << "Quick Sort 4000 elements: " << times->at(30) << "\n";
+	myfile << "Quick Sort 8000 elements: " << times->at(31) << "\n";
+	myfile << "Quick Sort 16000 elements: " << times->at(32) << "\n";
+	myfile << "Quick Sort 32000 elements: " << times->at(33) << "\n";
+	myfile << "Quick Sort 64000 elements: " << times->at(34) << "\n";
+	myfile << "\n\n\n\n";
+
 	//Merge Sort
-	myfile << "Merge Sort 1000 elements: " << times->at(30) << "\n";
-	myfile << "Merge Sort 2000 elements: " << times->at(31) << "\n";
-	myfile << "Merge Sort 4000 elements: " << times->at(32) << "\n";
-	myfile << "Merge Sort 8000 elements: " << times->at(33) << "\n";
-	myfile << "Merge Sort 16000 elements: " << times->at(34) << "\n";
-	myfile << "Merge Sort 32000 elements: " << times->at(35) << "\n";
+	myfile << "Merge Sort 1000 elements: " << times->at(35) << "\n";
+	myfile << "Merge Sort 2000 elements: " << times->at(36) << "\n";
+	myfile << "Merge Sort 4000 elements: " << times->at(37) << "\n";
+	myfile << "Merge Sort 8000 elements: " << times->at(38) << "\n";
+	myfile << "Merge Sort 16000 elements: " << times->at(39) << "\n";
+	myfile << "Merge Sort 32000 elements: " << times->at(40) << "\n";
+	myfile << "Merge Sort 64000 elements: " << times->at(41) << "\n";
+	myfile << "\n\n\n\n";
+
 	
 	//Bubble Sort
-	myfile << "Bubble Sort 1000 elements: " << times->at(36) << "\n";
-	myfile << "Bubble Sort 2000 elements: " << times->at(37) << "\n";
-	myfile << "Bubble Sort 4000 elements: " << times->at(38) << "\n";
-	myfile << "Bubble Sort 8000 elements: " << times->at(39) << "\n";
-	myfile << "Bubble Sort 16000 elements: " << times->at(40) << "\n";
-	myfile << "Bubble Sort 32000 elements: " << times->at(41) << "\n";
+	myfile << "Bubble Sort 1000 elements: " << times->at(42) << "\n";
+	myfile << "Bubble Sort 2000 elements: " << times->at(43) << "\n";
+	myfile << "Bubble Sort 4000 elements: " << times->at(44) << "\n";
+	myfile << "Bubble Sort 8000 elements: " << times->at(45) << "\n";
+	myfile << "Bubble Sort 16000 elements: " << times->at(46) << "\n";
+	myfile << "Bubble Sort 32000 elements: " << times->at(47) << "\n";
+	myfile << "Bubble Sort 64000 elements: " << times->at(48) << "\n";
+	myfile << "\n\n\n\n";
+
 	
 	//Bubble Sort w Flag
-	myfile << "Bubble Sort w Flag 1000 elements: " << times->at(42) << "\n";
-	myfile << "Bubble Sort w Flag 2000 elements: " << times->at(43) << "\n";
-	myfile << "Bubble Sort w Flag 4000 elements: " << times->at(44) << "\n";
-	myfile << "Bubble Sort w Flag 8000 elements: " << times->at(45) << "\n";
-	myfile << "Bubble Sort w Flag 16000 elements: " << times->at(46) << "\n";
-	myfile << "Bubble Sort w Flag 32000 elements: " << times->at(47) << "\n";
+	myfile << "Bubble Sort w Flag 1000 elements: " << times->at(49) << "\n";
+	myfile << "Bubble Sort w Flag 2000 elements: " << times->at(50) << "\n";
+	myfile << "Bubble Sort w Flag 4000 elements: " << times->at(51) << "\n";
+	myfile << "Bubble Sort w Flag 8000 elements: " << times->at(52) << "\n";
+	myfile << "Bubble Sort w Flag 16000 elements: " << times->at(53) << "\n";
+	myfile << "Bubble Sort w Flag 32000 elements: " << times->at(54) << "\n";
+	myfile << "Bubble Sort w Flag 64000 elements: " << times->at(55) << "\n";
+	myfile << "\n\n\n\n";
+
 	
 	//Heap Sort 
 	myfile << "Heap Sort 1000 elements: " << times->at(48) << "\n";
@@ -346,6 +375,7 @@ int main(){
 	myfile << "Heap Sort 8000 elements: " << times->at(51) << "\n";
 	myfile << "Heap Sort 16000 elements: " << times->at(52) << "\n";
 	myfile << "Heap Sort 32000 elements: " << times->at(53) << "\n";
+	myfile << "\n\n\n\n";
 
 
 	myfile.close();
