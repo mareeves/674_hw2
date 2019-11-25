@@ -3,271 +3,245 @@ class smoothSort : public ISort{
 
 	public:
 	
-	int root;
-	int *leo = new int[18];
+	void sort(vector<int> &vec){
+		vector<int>::iterator begin = vec.begin();
+		vector<int>::iterator end = vec.end();
+		SmoothsortExecute(begin, end);
 	
-	
+	};	
 	smoothSort(){
-		leo[0]=1;leo[1]=1;leo[2]=3;leo[3]=5;leo[4]=9;leo[5]=15;leo[6]=25;
-		leo[7]=41;leo[8]=67;leo[9]=109;leo[10]=177;leo[11]=287;leo[12]=465;
-		leo[13]=753;leo[14]=1219;leo[15]=1973;leo[16]=3193;leo[17]=5167;
-		
 	}
-	
-	struct heapShape{
-		bitset<18> trees;
-		int smallestTreeSize;
-		
-	};
-	
-	
-	void printAll(vector<int> &vec){
-		for(int i=0; i< vec.size(); i++){
-			cout << vec[i] << endl;
-		};
-		cout << endl << endl << endl;
-	}
-	
-	int compare(int first, int second, vector<int> vector){
-		if(vector[first]>vector[second]){
-			return first;
-		}
-		else{
-			return second;
-		}
-	}
-	
-	int distance(int first, int second, vector<int> &vector){
-		for(int i = first; i<vector.size(); i++){
-			if(vector[i]==vector[second]){
-				//cout << "first___" << vector[first] << endl;
-				//cout << "second___" << vector[second]<< endl;
-				//cout << "helloworld" << endl;
-				return i-first;
-			}
-		}
-		//cout << "first" << vector[first] << endl;
-		//cout << "second" << vector[second]<< endl;
-		
-		return -1;
-	}
-	
-	int firstChild(int root, int size){
-		return secondChild(root) - leo[size-2];
-	}
-	
-	int secondChild(int root){
-		return root -1;
-	}
-	
-	int largerChild(int root, int size, vector<int> &vector){
-		int first = firstChild(root, size);
-		int second = secondChild(root);
-		return compare(first, second, vector);
-	}
-	
-	void rebalanceSingleHeap(int root, int size, vector<int> &vector){
-		cout << "size: " << size << endl;
-		while(size>1){
-			cout << "hello" << endl;
-			int first = firstChild(root, size);
-			int second = secondChild(root);
-			int largerChild;
-			int childSize;
-			
-			if(compare(first, second, vector) == second){
-				largerChild = second;
-				childSize = size - 2;
-			}
-			else{	
-				largerChild = first;
-				childSize = size - 1;
-			}
-			
-			if(compare(root, largerChild, vector) == root){
-			cout << "root: " << vector[root] << endl;
-			cout << "largerChild: " << vector[largerChild] << endl;
-			return;
-			}
-			
-			cout << "Swapldlsf;lk: " << vector[root] << " with " << vector[largerChild] << endl;
-			swap(vector[root], vector[largerChild]);
-			root = largerChild;
-			size = childSize;
-			
-		}
-	}
-		
-			
-	void leonardoHeapRectify(int begin, int end, heapShape hs, vector<int> &vector){
-		int itr = end - 1;
-		int lastHeapSize;
-		
-		while(true){
-			lastHeapSize = hs.smallestTreeSize;
-			cout << "tree size: " << hs.smallestTreeSize << endl;
-			if(distance(begin,itr,vector) == leo[lastHeapSize] -1){
-				cout << "broke" << endl;			
-				break;
-			}
-			int toCompare = itr;
-			
-			if(hs.smallestTreeSize > 1){
-				int largeChild = largerChild(itr, hs.smallestTreeSize, vector);
-				
-				if(compare(toCompare, largeChild, vector) == largeChild){
-					toCompare = largeChild;
-				}
-			}
-			
-			int priorHeap = itr - leo[lastHeapSize];
-			
-			if(compare(toCompare, priorHeap, vector) == toCompare)
-			break;
-			
-			cout << "Swap: " << vector[itr] << " with " << vector[priorHeap] << endl;
-
-			swap(vector[itr], vector[priorHeap]);
-			itr = priorHeap;
-			
-			do {
-				hs.trees >>= 1;
-				++hs.smallestTreeSize;
-			} while(!hs.trees[0]);
-			
-		}
-		
-	}
-	
-	void leonardoHeapAdd(int begin, int end, int heapEnd, heapShape &hs, vector<int> &vector){
-		if (!hs.trees[0]) {
-			cout << "!hs.trees[0]" << endl;
-      		hs.trees[0] = true;
-      		hs.smallestTreeSize = 1;
-    	}    	
-    	else if (hs.trees[1] && hs.trees[0]) {
-			cout << "hs.trees[1] && hs.trees[0]" << endl;    	
-		  	hs.trees >>= 2;
-		  	hs.trees[0] = true;
-		  	hs.smallestTreeSize += 2;
-    	}     	
-		else if (hs.smallestTreeSize == 1) {
-			cout << "hs.smallestTreeSize == 1" << endl;
-		  	hs.trees <<= 1;
-		  	hs.smallestTreeSize = 0;
-	
-		  	hs.trees[0] = true;
-		} 
-		else {
-			cout << "else" << endl;
-
-		  hs.trees <<= hs.smallestTreeSize - 1;
-		  hs.trees[0] = true;
-
-		  hs.smallestTreeSize = 1;
-		}
-		
-		bool isLast = false;
-		switch (hs.smallestTreeSize) {
-		case 0:
-		  if (end + 1 == heapEnd)
-			isLast = true;
-		  break;
-
-		case 1:
-		  if (end + 1 == heapEnd || (end + 2 == heapEnd && !hs.trees[1]))
-			isLast = true;
-		  break;
-
-		default:
-		  if (int(distance(end + 1, heapEnd, vector)) < leo[hs.smallestTreeSize - 1] + 1)
-			isLast = true;
-		  break;
-		}	
-		if (!isLast){
-			cout << "rebalance single heap" << endl;
-		  rebalanceSingleHeap(end, hs.smallestTreeSize, vector);
-		  }
-		else{
-		 cout << "heap rectify" << endl;
-
-		  leonardoHeapRectify(begin, end + 1, hs, vector);
-		  }
-	}
-	
-	
-	void leonardoHeapRemove(int begin, int end,
-                          heapShape &hs, vector<int> & vector) {
-	
-
-		if (hs.smallestTreeSize <= 1) {
-		  do {
-			hs.trees >>= 1;
-			++hs.smallestTreeSize;
-		  } while (hs.trees.any() && !hs.trees[0]);
-		  return;
-		}
-	
-
-		const int heapOrder = hs.smallestTreeSize;
-		hs.trees[0] = false;
-		hs.trees <<= 2;
-		hs.trees[1] = hs.trees[0] = true;
-		hs.smallestTreeSize -= 2;
-		
-
-		int leftHeap  = firstChild(end - 1, heapOrder);
-		int rightHeap = secondChild(end - 1);
-	
-
-		heapShape allButLast = hs;
-		++allButLast.smallestTreeSize;
-		allButLast.trees >>= 1;
-		
-		cout << "made it this far" << endl;
-		leonardoHeapRectify(begin, leftHeap + 1,  allButLast, vector);
-		leonardoHeapRectify(begin, rightHeap + 1, hs, vector);
-  }
-  
-		
-		
-	
-	
-	//////
-	
-	//////
-	
-	
-	//////
-	
-	//////
-	
-	void sort(vector<int> & vector);
 	
 	~smoothSort(){
 		
 	}
 	
+	static const size_t kNumLeonardoNumbers = 46;
+
+	const size_t kLeonardoNumbers[kNumLeonardoNumbers] = {
+	1u, 1u, 3u, 5u, 9u, 15u, 25u, 41u, 67u, 109u, 177u, 287u, 465u, 753u, 
+	1219u, 1973u, 3193u, 5167u, 8361u, 13529u, 21891u, 35421u, 57313u, 92735u,
+	150049u, 242785u, 392835u, 635621u, 1028457u, 1664079u, 2692537u, 
+	4356617u, 7049155u, 11405773u, 18454929u, 29860703u, 48315633u, 78176337u,
+	126491971u, 204668309u, 331160281u, 535828591u, 866988873u, 1402817465u,
+	2269806339u, 3672623805u
+	};
 	
+	struct HeapShape {
+	std::bitset<kNumLeonardoNumbers> trees;
 	
+	size_t smallestTreeSize;
+	};
+
+	template <typename RandomIterator>
+	RandomIterator SecondChild(RandomIterator root) {
+	return root - 1;
+	}
 	
 
-};
+	template <typename RandomIterator>
+	RandomIterator FirstChild(RandomIterator root, size_t size) {
 
-void smoothSort::sort(vector<int> & vector){
-	int begin = 0;
-	int end = vector.size();
+	return SecondChild(root) - kLeonardoNumbers[size - 2];
+	}
+	
+	template <typename RandomIterator, typename Comparator>
+	RandomIterator LargerChild(RandomIterator root, size_t size, Comparator comp) {
+	RandomIterator first  = FirstChild(root, size);
+	RandomIterator second = SecondChild(root);
+		return comp(*first, *second)? second : first;
+	}
+
+	template <typename RandomIterator, typename Comparator>
+	void RebalanceSingleHeap(RandomIterator root, size_t size, Comparator comp) {
+
+	while (size > 1) {
+	  RandomIterator first  = FirstChild(root, size);
+	  RandomIterator second = SecondChild(root);
+	
+	  RandomIterator largerChild;
+	  size_t childSize;
+	  if (comp(*first, *second)) { 
+		largerChild = second; // Second child is larger...
+		childSize = size - 2; // ... and has order k - 2.
+	  } else {
+		largerChild = first;  // First child is larger...
+		childSize = size - 1; // ... and has order k - 1.
+	  }
+	
+	  /* If the root is bigger than this child, we're done. */
+	  if (!comp(*root, *largerChild))
+		return;
+	
+	  /* Otherwise, swap down and update our order. */
+	  std::iter_swap(root, largerChild);
+	  root = largerChild;
+	  size = childSize;
+	}
+	}
+
+	template <typename RandomIterator, typename Comparator>
+	void LeonardoHeapRectify(RandomIterator begin, RandomIterator end,
+						   HeapShape shape, Comparator comp) {
+
+	RandomIterator itr = end - 1;
+
+	size_t lastHeapSize;
+
+	while (true) {
+	  lastHeapSize = shape.smallestTreeSize;
+	
+	  if (size_t(std::distance(begin, itr)) == kLeonardoNumbers[lastHeapSize] - 1)
+		break;
+
+	  RandomIterator toCompare = itr;
+	
+	  if (shape.smallestTreeSize > 1) {
+
+		RandomIterator largeChild = LargerChild(itr, shape.smallestTreeSize,
+												comp);
+		  
+		if (comp(*toCompare, *largeChild))
+		  toCompare = largeChild;
+	  }
+	
+	  RandomIterator priorHeap = itr - kLeonardoNumbers[lastHeapSize];
+	
+	  if (!comp(*toCompare, *priorHeap))
+		break;
+	
+	  std::iter_swap(itr, priorHeap);
+	  itr = priorHeap;
+	
+	  do {
+		shape.trees >>= 1;
+		++shape.smallestTreeSize;
+	  } while (!shape.trees[0]);
+	}
+	
+	RebalanceSingleHeap(itr, lastHeapSize, comp);
+	}
+
+	template <typename RandomIterator, typename Comparator>
+	void LeonardoHeapAdd(RandomIterator begin, RandomIterator end,
+					   RandomIterator heapEnd,
+					   HeapShape& shape, Comparator comp) {
+	
+	if (!shape.trees[0]) {
+	  shape.trees[0] = true;
+	  shape.smallestTreeSize = 1;
+	}
+	else if (shape.trees[1] && shape.trees[0]) {
+	  shape.trees >>= 2;
+
+	  shape.trees[0] = true;
+
+	  shape.smallestTreeSize += 2;
+	} 
+	else if (shape.smallestTreeSize == 1) {
+	  shape.trees <<= 1;
+	  shape.smallestTreeSize = 0;
+	  shape.trees[0] = true;
+	} 
+	else {
+
+	  shape.trees <<= shape.smallestTreeSize - 1;
+	  shape.trees[0] = true;
+
+	  shape.smallestTreeSize = 1;
+	}
+	
+
+	bool isLast = false;
+	switch (shape.smallestTreeSize) {
+
+	case 0:
+	  if (end + 1 == heapEnd)
+		isLast = true;
+	  break;
+	
+	case 1:
+	  if (end + 1 == heapEnd || (end + 2 == heapEnd && !shape.trees[1]))
+		isLast = true;
+	  break;
+	
+	default:
+	  if (size_t(std::distance(end + 1, heapEnd)) < kLeonardoNumbers[shape.smallestTreeSize - 1] + 1)
+		isLast = true;
+	  break;
+	}
+	
+	if (!isLast)
+	  RebalanceSingleHeap(end, shape.smallestTreeSize, comp);
+	else
+	  LeonardoHeapRectify(begin, end + 1, shape, comp);
+	}
+
+	template <typename RandomIterator, typename Comparator>
+	void LeonardoHeapRemove(RandomIterator begin, RandomIterator end,
+						  HeapShape& shape, Comparator comp) {
+
+	
+	if (shape.smallestTreeSize <= 1) {
+	  /* Keep scanning up the list looking for the next tree. */
+	  do {
+		shape.trees >>= 1;
+		++shape.smallestTreeSize;
+	  } while (shape.trees.any() && !shape.trees[0]);
+	  return;
+	}
+	
+	const size_t heapOrder = shape.smallestTreeSize;
+	shape.trees[0] = false;
+	shape.trees <<= 2;
+	shape.trees[1] = shape.trees[0] = true;
+	shape.smallestTreeSize -= 2;
+
+	RandomIterator leftHeap  = FirstChild(end - 1, heapOrder);
+	RandomIterator rightHeap = SecondChild(end - 1);
+
+	HeapShape allButLast = shape;
+	++allButLast.smallestTreeSize;
+	allButLast.trees >>= 1;
+
+	LeonardoHeapRectify(begin, leftHeap + 1,  allButLast, comp);
+	LeonardoHeapRectify(begin, rightHeap + 1, shape, comp);
+	}
+	
+	template <typename RandomIterator, typename Comparator>
+	void SmoothsortExecute(RandomIterator begin, RandomIterator end, Comparator comp) {
 	if (begin == end || begin + 1 == end) return;
 	
-	heapShape hs;
-	hs.smallestTreeSize = 0;
+	HeapShape shape;
+	shape.smallestTreeSize = 0;
+	
+	for (RandomIterator itr = begin; itr != end; ++itr)
+	LeonardoHeapAdd(begin, itr, end, shape, comp);
+
+	for (RandomIterator itr = end; itr != begin; --itr)
+	LeonardoHeapRemove(begin, itr, shape, comp);
+	}
 	
 	
-	for (int itr = begin; itr != end; ++itr)
-	leonardoHeapAdd(begin, itr, end, hs, vector);
+	template <typename RandomIterator>
+	void SmoothsortExecute(RandomIterator begin, RandomIterator end) {
+  	SmoothsortExecute(begin, end,
+             std::less<typename std::iterator_traits<RandomIterator>::value_type>());
+	}
+
 	
-	for (int itr = end; itr != begin; --itr)
-	leonardoHeapRemove(begin, itr, hs, vector);
 	
-	printAll(vector);
-}
+};
+
+
+
+
+
+
+
+
+
+
+
+	
+	
